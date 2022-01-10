@@ -5,7 +5,7 @@ namespace App\Controller\Backend\Produit;
 use App\Entity\Burger;
 use App\Repository\BurgerRepository;
 use App\Repository\ConfigurationVarRepository;
-use App\Service\DigitalGenerator;
+use App\Service\Generator\DigitalGenerator;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

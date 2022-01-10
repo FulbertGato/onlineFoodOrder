@@ -2,9 +2,9 @@
 
 namespace App\Controller\Backend\Produit;
 
-use DateTime;
+
 use App\Entity\Menu;
-use App\Service\DigitalGenerator;
+use App\Service\Generator\DigitalGenerator;
 use App\Repository\MenuRepository;
 use App\Repository\BurgerRepository;
 use App\Repository\ComplementRepository;
@@ -49,8 +49,8 @@ class MenuController extends AbstractController
      */
     public function store(Request $request, BurgerRepository $repoBurger,ComplementRepository $repoComplement,DigitalGenerator $gen,ConfigurationVarRepository $repoVar,EntityManagerInterface $em,ValidatorInterface $validator): Response
     {
-        $burger=$repoBurger->findOneBy(['code' => $request->request->get('burger')]);
-        $codes=$request->request->get('complements');
+         $burger=$repoBurger->findOneBy(['code' => $request->request->get('burger')]);
+         $codes=$request->request->get('complements');
         
         $prix=0;
         if($codes == null){
@@ -60,7 +60,6 @@ class MenuController extends AbstractController
             foreach ($codes as $code) {
 
                 $complement=$repoComplement->findOneBy(['code' => $code]);
-                //$complements[]=$complement;
                 if($complement !=null){
                     $menu->addComplement($complement);
                     $prix=  $complement->getPrix()+$prix;  
@@ -69,10 +68,9 @@ class MenuController extends AbstractController
                 
             }
         }
-         // $complement=$repoComplement->findAll();
-         // dd( $complements);
+
          $prix=$burger->getPrix()+$prix;
-         $time= new DateTime($request->request->get('temps'));
+
          $menu->setNom($request->request->get('nom'));
          $menu->setPrix($prix);
          $menu->setTempsCuisson($burger->getTempsCuisson());
@@ -81,16 +79,12 @@ class MenuController extends AbstractController
          $menu->setBurger($burger);
 
          $errors = $validator->validate($menu);
-
-           // dd($ref);
             if (count($errors) > 0) {
-
-              dd($errors);
               $this->addFlash(
                     'error_message',
                     'Veuillez verifier votre saissie'
-                );
-                return $this->redirectToRoute('complement');
+              );
+              return $this->redirectToRoute('menus');
             }
             $em->persist($menu);
             $em->flush();
@@ -99,6 +93,80 @@ class MenuController extends AbstractController
             $em->persist($var);
             $em->flush();
          
+        return $this->redirectToRoute('menus');
+    }
+
+    /**
+     * @Route("/produit/menu/edit/{code}", name="menus_edit")
+     */
+    public  function edit(BurgerRepository $repoBurger,ComplementRepository $repoComplement,MenuRepository  $repo,Request $request){
+        $burgers=$repoBurger->findAll();
+        $complements=$repoComplement->findAll();
+        $menuSelect=$repo->findOneBy(['code' => $request->attributes->filter('code')]);
+        return $this->render('backend/produit/menu/add.html.twig', [
+            'burgers'=>$burgers,
+            'complements'=>$complements,
+            'menuSelect'=>$menuSelect
+        ]);
+
+
+    }
+    /**
+     * @Route("/produit/menu/update", name="menus_update")
+     */
+    public  function update(Request  $request,BurgerRepository $repoBurger,ComplementRepository $repoComplement,MenuRepository  $repo,EntityManagerInterface $em,ValidatorInterface $validator){
+
+        //dd($request);
+        $burger=$repoBurger->findOneBy(['code' => $request->request->get('burger')]);
+        $codes=$request->request->get('complements');
+        $prix=0;
+        if($codes == null){
+            return $this->redirectToRoute('menus_add');
+        }else{
+            $menu= $repo->findOneBy(['code' => $request->request->get('code')]);
+            $complements=[];
+            $prix=0;
+
+            foreach ($codes as $code) {
+
+                $complement=$repoComplement->findOneBy(['code' => $code]);
+                $complements[]=$complement;
+                $prix=  $complement->getPrix()+$prix;
+            }
+            $menu->setComplements($complements);
+            $prix=$burger->getPrix()+$prix;
+            $menu->setNom($request->request->get('nom'));
+            $menu->setPrix($prix);
+            $menu->setTempsCuisson($burger->getTempsCuisson());
+            $menu->setBurger($burger);
+            $errors = $validator->validate($menu);
+            if (count($errors) > 0) {
+                $this->addFlash(
+                    'error_message',
+                    'Veuillez verifier votre saissie'
+                );
+                return $this->redirectToRoute('menus');
+            }
+            $em->persist($menu);
+            $em->flush();
+            return $this->redirectToRoute('menus');
+        }
+    }
+    /**
+     * @Route("/produit/menu/delete/{code}", name="menus_delete")
+     */
+
+    public function delete(EntityManagerInterface $em,Request $request,MenuRepository $repo)
+    {
+        $code=$request->attributes->filter('code');
+
+        $menu=$repo->findOneBy(['code' => $code]);
+
+        if($menu !=null){
+            $em->remove($menu);
+            $em->flush();
+        }
+
         return $this->redirectToRoute('menus');
     }
 }

@@ -6,7 +6,7 @@ use App\Entity\Complement;
 use App\Repository\ComplementRepository;
 use App\Repository\ConfigurationVarRepository;
 use App\Repository\TypeComplementRepository;
-use App\Service\DigitalGenerator;
+use App\Service\Generator\DigitalGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

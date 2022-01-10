@@ -94,4 +94,11 @@ class Menu extends Produit
 
         return $this;
     }
+    public  function setComplements(Array $complements): self
+    {
+
+        $this->complements = $complements;
+
+        return $this;
+    }
 }
