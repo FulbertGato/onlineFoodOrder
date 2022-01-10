@@ -44,6 +44,20 @@ class DigitalGenerator
 
                }
                break;
+            case 'menu':
+                if($lastId==null){
+ 
+                    $ref= "MN-00001";
+ 
+ 
+                }else{
+                    $lastId=$lastId->getLastIdMenu();
+                    $idT= str_replace('BU-','',$lastId);
+                    $id= str_pad($idT+1,5,0,STR_PAD_LEFT);
+                    $ref="MN-".$id;
+ 
+                }
+                break;
            
            default:
                # code...
