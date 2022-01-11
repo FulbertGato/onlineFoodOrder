@@ -115,6 +115,9 @@
     "nikic/php-parser": {
         "version": "v4.13.2"
     },
+    "payplug/payplug-php": {
+        "version": "3.5.3"
+    },
     "phar-io/manifest": {
         "version": "2.0.3"
     },

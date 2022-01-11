@@ -2,14 +2,22 @@
 
 namespace App\Controller\Frontend;
 
-use App\Repository\BurgerRepository;
 use App\Repository\MenuRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\BurgerRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
+
+    private SessionInterface $session;
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+        
+    }
     /**
      * @Route("/", name="home")
      */
@@ -18,11 +26,13 @@ class HomeController extends AbstractController
         $burgers= $repoBurger->findAll();
         $menus=$repoMenu->findAll();
 
-
+        
         return $this->render('frontend/home/index.html.twig',[
 
+
             'menus'=>$menus,
-            'burgers'=>$burgers
+            'burgers'=>$burgers,
+            'cart' =>$this->session->get('cart',[])
 
             ]);
     }
@@ -39,6 +49,7 @@ class HomeController extends AbstractController
         return $this->render('frontend/shop/menu.html.twig',[
 
             'menus'=>$menus,
+            'cart' =>$this->session->get('cart',[])
             
 
             ]);
@@ -56,6 +67,7 @@ class HomeController extends AbstractController
         return $this->render('frontend/shop/burger.html.twig',[
 
             'burgers'=>$burgers,
+            'cart' =>$this->session->get('cart',[])
             
 
             ]);

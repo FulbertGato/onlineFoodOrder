@@ -23,7 +23,7 @@ class ClientsFixtures extends Fixture
             $data->setNom("Nom Client".$i);
             $data->setPrenom("Prenom Client ".$i)
                 //$data->setMatricule(uniqid())
-                ->setTelephone("Telephone ".$i)
+                
                 ->setEmail("client".$i."@example.com");
             $plainPassword = 'passer@123';
             $passwordEncode= $this->encoder->hashPassword($data, $plainPassword);
