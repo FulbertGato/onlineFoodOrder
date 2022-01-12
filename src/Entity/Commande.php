@@ -3,10 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\CommandeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=CommandeRepository::class)
+ * @UniqueEntity("code")
  */
 class Commande
 {
@@ -19,24 +23,44 @@ class Commande
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $numeroCommande;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Assert\NotBlank
      */
     private $createAt;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank
      */
     private $status;
 
     /**
-     * @ORM\OneToOne(targetEntity=DetailCommande::class, mappedBy="commande", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=DetailCommande::class, mappedBy="commande", orphanRemoval=true)
      */
-    private $detailCommande;
+    private $detailCommandes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="commandes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $client;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Paiement::class, mappedBy="commande", cascade={"persist", "remove"})
+     */
+    private $paiement;
+
+    public function __construct()
+    {
+        $this->detailCommandes = new ArrayCollection();
+        $this->createAt= new \DateTimeImmutable();
+    }
+   
     public function getId(): ?int
     {
         return $this->id;
@@ -78,20 +102,64 @@ class Commande
         return $this;
     }
 
-    public function getDetailCommande(): ?DetailCommande
+    /**
+     * @return Collection|DetailCommande[]
+     */
+    public function getDetailCommandes(): Collection
     {
-        return $this->detailCommande;
+        return $this->detailCommandes;
     }
 
-    public function setDetailCommande(DetailCommande $detailCommande): self
+    public function addDetailCommande(DetailCommande $detailCommande): self
     {
-        // set the owning side of the relation if necessary
-        if ($detailCommande->getCommande() !== $this) {
+        if (!$this->detailCommandes->contains($detailCommande)) {
+            $this->detailCommandes[] = $detailCommande;
             $detailCommande->setCommande($this);
         }
 
-        $this->detailCommande = $detailCommande;
+        return $this;
+    }
+
+    public function removeDetailCommande(DetailCommande $detailCommande): self
+    {
+        if ($this->detailCommandes->removeElement($detailCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($detailCommande->getCommande() === $this) {
+                $detailCommande->setCommande(null);
+            }
+        }
 
         return $this;
     }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getPaiement(): ?Paiement
+    {
+        return $this->paiement;
+    }
+
+    public function setPaiement(Paiement $paiement): self
+    {
+        // set the owning side of the relation if necessary
+        if ($paiement->getCommande() !== $this) {
+            $paiement->setCommande($this);
+        }
+
+        $this->paiement = $paiement;
+
+        return $this;
+    }
+
+    
 }

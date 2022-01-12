@@ -52,10 +52,23 @@ class DigitalGenerator
  
                 }else{
                     $lastId=$lastId->getLastIdMenu();
-                    $idT= str_replace('BU-','',$lastId);
+                    $idT= str_replace('MN-','',$lastId);
                     $id= str_pad($idT+1,5,0,STR_PAD_LEFT);
                     $ref="MN-".$id;
  
+                }
+            case 'commande':
+                if($lastId==null){
+    
+                    $ref= "#IN000001";
+    
+    
+                }else{
+                    $lastId=$lastId->getLastIdCommande();
+                    $idT= str_replace('#IN','',$lastId);
+                    $id= str_pad($idT+1,6,0,STR_PAD_LEFT);
+                    $ref="#IN".$id;
+    
                 }
                 break;
            

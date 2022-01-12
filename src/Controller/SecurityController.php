@@ -33,6 +33,7 @@ class SecurityController extends AbstractController
     public function register(HttpRequest $request, EntityManagerInterface $em,ValidatorInterface $validator): Response
     {
         if ($this->getUser()) {
+            dd($this->getUser());
            return $this->redirectToRoute('home');
         }
         

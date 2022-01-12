@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DetailCommandeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,20 +30,20 @@ class DetailCommande
     private $montant;
 
     /**
-     * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="detailCommande", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Commande::class, inversedBy="detailCommandes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $commande;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Produit::class, inversedBy="detailCommandes")
+     * @ORM\ManyToOne(targetEntity=Produit::class, inversedBy="detailCommandes")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $produits;
+    private $produit;
 
-    public function __construct()
-    {
-        $this->produits = new ArrayCollection();
-    }
+    
+
+    
 
     
 
@@ -83,36 +83,28 @@ class DetailCommande
         return $this->commande;
     }
 
-    public function setCommande(Commande $commande): self
+    public function setCommande(?Commande $commande): self
     {
         $this->commande = $commande;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Produit[]
-     */
-    public function getProduits(): Collection
+    public function getProduit(): ?Produit
     {
-        return $this->produits;
+        return $this->produit;
     }
 
-    public function addProduit(Produit $produit): self
+    public function setProduit(?Produit $produit): self
     {
-        if (!$this->produits->contains($produit)) {
-            $this->produits[] = $produit;
-        }
+        $this->produit = $produit;
 
         return $this;
     }
 
-    public function removeProduit(Produit $produit): self
-    {
-        $this->produits->removeElement($produit);
+    
 
-        return $this;
-    }
+    
 
     
 

@@ -47,7 +47,7 @@ class Produit
     private $detail;
 
     /**
-     * @ORM\ManyToMany(targetEntity=DetailCommande::class, mappedBy="produits")
+     * @ORM\OneToMany(targetEntity=DetailCommande::class, mappedBy="produit")
      */
     private $detailCommandes;
 
@@ -55,6 +55,10 @@ class Produit
     {
         $this->detailCommandes = new ArrayCollection();
     }
+
+  
+
+    
 
    
 
@@ -123,7 +127,7 @@ class Produit
     {
         if (!$this->detailCommandes->contains($detailCommande)) {
             $this->detailCommandes[] = $detailCommande;
-            $detailCommande->addProduit($this);
+            $detailCommande->setProduit($this);
         }
 
         return $this;
@@ -132,11 +136,18 @@ class Produit
     public function removeDetailCommande(DetailCommande $detailCommande): self
     {
         if ($this->detailCommandes->removeElement($detailCommande)) {
-            $detailCommande->removeProduit($this);
+            // set the owning side to null (unless already changed)
+            if ($detailCommande->getProduit() === $this) {
+                $detailCommande->setProduit(null);
+            }
         }
 
         return $this;
     }
+
+    
+
+    
 
     
 }

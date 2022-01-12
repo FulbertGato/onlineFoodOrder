@@ -14,12 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Client extends  User
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
@@ -33,17 +28,20 @@ class Client extends  User
      */
     private $adresses;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Commande::class, mappedBy="client", orphanRemoval=true)
+     */
+    private $commandes;
+
     public function __construct()
     {
 
         $this->setRoles(['ROLE_CLIENT']);
         $this->adresses = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    
 
     public function getTelephone(): ?string
     {
@@ -81,6 +79,36 @@ class Client extends  User
             // set the owning side to null (unless already changed)
             if ($adress->getClient() === $this) {
                 $adress->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commande[]
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): self
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes[] = $commande;
+            $commande->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): self
+    {
+        if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getClient() === $this) {
+                $commande->setClient(null);
             }
         }
 

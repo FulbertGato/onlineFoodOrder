@@ -32,6 +32,11 @@ class ConfigurationVar
      */
     private $lastIdMenu;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $lastIdCommande;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class ConfigurationVar
     public function setLastIdMenu(int $lastIdMenu): self
     {
         $this->lastIdMenu = $lastIdMenu;
+
+        return $this;
+    }
+
+    public function getLastIdCommande(): ?int
+    {
+        return $this->lastIdCommande;
+    }
+
+    public function setLastIdCommande(int $lastIdCommande): self
+    {
+        $this->lastIdCommande = $lastIdCommande;
 
         return $this;
     }
