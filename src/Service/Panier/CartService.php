@@ -88,5 +88,12 @@ class CartService
 
         return $total;
     }
+    public function cancelCart(){
+
+       
+       
+        $this->session->remove('cart');
+
+    }
 
 }

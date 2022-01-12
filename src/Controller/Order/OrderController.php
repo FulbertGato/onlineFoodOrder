@@ -72,15 +72,34 @@ class OrderController extends AbstractController {
      /**
      * @Route("/order/confirm/{numeroCommande}", name="order_confirm")
      */
-    public function successOrder($numeroCommande,CommandeRepository $repo,EntityManagerInterface $em){
+    public function successOrder($numeroCommande,CommandeRepository $repo,EntityManagerInterface $em,CartService $cart){
 
         $commande = $repo->findOneBy(['numeroCommande' => '#IN'.$numeroCommande]);
       //  dd($commande);
         $status = new PaiementService();
-        $status= $status->checkStatus($commande);
+        $paiement= $status->checkStatus($commande);
+         $yo= $paiement->is_paid;
+        if($yo){
 
-        dd("success".$numeroCommande);
+          
+            $commande->setStatus("confirmer");
+            $commande->getPaiement()->setStatus('paid');
+            $em->persist($commande);
+            $em->flush();
+            $cart->cancelCart();
+            dd("success : ".$numeroCommande);
 
+        }else{
+
+           
+            $commande->setStatus("annuler");
+            $commande->getPaiement()->setStatus('unpaid');
+            $em->persist($commande);
+            $em->flush();
+            dd("cancel: ".$numeroCommande);
+
+
+        }
     }
 
     
@@ -91,10 +110,7 @@ class OrderController extends AbstractController {
     public function notiflOrder($numeroCommande,CommandeRepository $repo,EntityManagerInterface $em){
         //dd("cancel ".$numeroCommande);
 
-        $commande = $repo->findOneBy(['numeroCommande' => '#IN'.$numeroCommande]);
-        $commande->setStatus("payementAction");
-        $em->persist($commande);
-        $em->flush();
+        
     }
 
 }

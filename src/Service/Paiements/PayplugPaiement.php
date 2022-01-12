@@ -24,7 +24,7 @@ class PayplugPaiement
         }
         $amount = $amount * 0.0015 ;
         $num=str_replace('#IN','',$commande->getNumeroCommande());
-        $commande->setNumeroCommande($num);
+       // $commande->setNumeroCommande($num);
 
         $payment = \Payplug\Payment::create(array(
             'amount'           => $amount * 100,
@@ -53,12 +53,12 @@ class PayplugPaiement
               'delivery_type' => 'BILLING'
             ),
             'hosted_payment'   => array(
-              'return_url'     => 'https://localhost:7000/order/confirm/'.$commande->getNumeroCommande(),
-              'cancel_url'     => 'https://localhost:7000/order/confirm/'.$commande->getNumeroCommande()
+              'return_url'     => 'https://localhost:7000/order/confirm/'.$num,
+              'cancel_url'     => 'https://localhost:7000/order/confirm/'.$num
             ),
-            'notification_url' => 'https://localhost:7000/order/notif/'.$commande->getNumeroCommande(),
+            'notification_url' => 'https://localhost:7000/order/notif/'.$num,
             'metadata'         => array(
-              'customer_id'    => $commande->getNumeroCommande(),
+              'customer_id'    => $num,
             )
           ));
           $payment_url = $payment->hosted_payment->payment_url;
@@ -72,7 +72,9 @@ class PayplugPaiement
 
     public function checkStatut(Commande $commande){
         $payment = \Payplug\Payment::retrieve($commande->getPaiement()->getIdPaiement());
-        dd($payment);
+       // dd($payment);
+       return $payment;
+
     }
 
 }

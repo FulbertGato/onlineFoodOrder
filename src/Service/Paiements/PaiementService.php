@@ -21,8 +21,8 @@ class PaiementService
     public function checkStatus(Commande $commande){
 
         $intent = new PayplugPaiement();
-        $intent->checkStatut($commande);
-        dd($intent);
+        $paiement = $intent->checkStatut($commande);
+        return $paiement;
     }
 
 }
