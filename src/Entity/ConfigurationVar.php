@@ -37,6 +37,21 @@ class ConfigurationVar
      */
     private $lastIdCommande;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $payplugApi;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mailjetApi;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mailjetApiSecret;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +101,42 @@ class ConfigurationVar
     public function setLastIdCommande(int $lastIdCommande): self
     {
         $this->lastIdCommande = $lastIdCommande;
+
+        return $this;
+    }
+
+    public function getPayplugApi(): ?string
+    {
+        return $this->payplugApi;
+    }
+
+    public function setPayplugApi(string $payplugApi): self
+    {
+        $this->payplugApi = $payplugApi;
+
+        return $this;
+    }
+
+    public function getMailjetApi(): ?string
+    {
+        return $this->mailjetApi;
+    }
+
+    public function setMailjetApi(string $mailjetApi): self
+    {
+        $this->mailjetApi = $mailjetApi;
+
+        return $this;
+    }
+
+    public function getMailjetApiSecret(): ?string
+    {
+        return $this->mailjetApiSecret;
+    }
+
+    public function setMailjetApiSecret(string $mailjetApiSecret): self
+    {
+        $this->mailjetApiSecret = $mailjetApiSecret;
 
         return $this;
     }

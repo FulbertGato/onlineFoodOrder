@@ -26,7 +26,7 @@ class AccountController extends AbstractController
         
         return $this->render('frontend/account/index.html.twig',[
 
-
+            'user' =>$this->getUser(),
             'cart' =>$this->session->get('cart',[])
 
             ]);

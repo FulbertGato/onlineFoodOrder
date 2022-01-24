@@ -7,7 +7,7 @@ use App\Entity\Paiement;
 use App\Repository\CommandeRepository;
 use App\Service\Panier\CartService;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Service\Paiement\PaiementService;
+use App\Service\Paiements\PaiementService;
 use App\Service\Generator\DigitalGenerator;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -19,47 +19,46 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class OrderController extends AbstractController {
 
+
+   
+    
+
     /**
      * @Route("/pay", name="order_action")
      */
-    public function order_create(Request $request,CartService $cart,DigitalGenerator $gen, EntityManagerInterface $em,ValidatorInterface $validator,ConfigurationVarRepository $repoVar)
+    public function order_create(Request $request,CartService $cart,DigitalGenerator $gen, EntityManagerInterface $em,ConfigurationVarRepository $repoVar)
     {
 
         $commande= new Commande();
         $commande->setNumeroCommande($gen->generateRef("commande"));
         $commande->setStatus('en attente');
         $commande->setClient($this->getUser());
-        $em->persist($commande);
-        $em->flush();
-        $var=$repoVar->find(1);
-        $var->setLastIdCommande($var->getLastIdCommande()+1);
-        $em->persist($var);
-        $em->flush();
+      
+       
+       
         foreach ($cart->getFullCart() as $item) {
-           //dd($item['item']);
             $detail = new DetailCommande();
-            $detail->setProduit($item['item']);
-            $detail->setCommande($commande);
-            $detail->setQuantite($item['quantite']);
-            $detail->setMontant($item['quantite'] * $item['item']->getPrix());
+            $detail->setProduit($item['item'])
+                    ->setCommande($commande)
+                    ->setQuantite($item['quantite'])
+                    ->setMontant($item['quantite'] * $item['item']->getPrix());
             $em->persist($detail);
-            $em->flush();
             $commande->addDetailCommande($detail);
-
         }
             $em->persist($commande);
+            $var=$this->setNewIdOrde($repoVar);
+            $em->persist($var);
             $em->flush();
-            
-           // dd($commande);
+
             if($request->request->get('pay-method')){
-                //dd($request->request->get('pay-method'));
+                
                 $payplug= new PaiementService();
                 $url= $payplug->OrderPay($commande,$request->request->get('pay-method'));
                 $paiement= new Paiement();
-                $paiement->setIdPaiement($url['idPaiement']);
-                $paiement->setCommande($commande);
-                $paiement->setMethode($request->request->get('pay-method'));
-                $paiement->setStatus("unpaid");
+                $paiement->setIdPaiement($url['idPaiement'])
+                            ->setCommande($commande)
+                            ->setMethode($request->request->get('pay-method'))
+                            ->setStatus("unpaid");
                 $em->persist($paiement);
                 $em->flush();
                 return $this->redirect($url['url']);
@@ -72,14 +71,14 @@ class OrderController extends AbstractController {
      /**
      * @Route("/order/confirm/{numeroCommande}", name="order_confirm")
      */
-    public function successOrder($numeroCommande,CommandeRepository $repo,EntityManagerInterface $em,CartService $cart){
+    public function OrderTerminate($numeroCommande,CommandeRepository $repo,EntityManagerInterface $em,CartService $cart){
 
         $commande = $repo->findOneBy(['numeroCommande' => '#IN'.$numeroCommande]);
-      //  dd($commande);
-        $status = new PaiementService();
-        $paiement= $status->checkStatus($commande);
-         $yo= $paiement->is_paid;
-        if($yo){
+    
+        $paiement = new PaiementService();
+        $paiementCheck= $paiement->checkStatus($commande);
+        $status= $paiementCheck->is_paid;
+        if($status){
 
           
             $commande->setStatus("confirmer");
@@ -104,13 +103,12 @@ class OrderController extends AbstractController {
 
     
 
-    /**
-     * @Route("order/notif/{numeroCommande}", name="order_cancel")
-     */
-    public function notiflOrder($numeroCommande,CommandeRepository $repo,EntityManagerInterface $em){
-        //dd("cancel ".$numeroCommande);
+   
 
-        
+    public function setNewIdOrde(ConfigurationVarRepository $repoVar){
+        $var=$repoVar->find(1);
+        $var->setLastIdCommande($var->getLastIdCommande()+1);
+        return $var;
     }
 
 }

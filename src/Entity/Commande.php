@@ -44,16 +44,17 @@ class Commande
      */
     private $detailCommandes;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="commandes")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $client;
 
     /**
      * @ORM\OneToOne(targetEntity=Paiement::class, mappedBy="commande", cascade={"persist", "remove"})
      */
     private $paiement;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="commandes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $client;
 
     public function __construct()
     {
@@ -132,17 +133,7 @@ class Commande
         return $this;
     }
 
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    public function setClient(?Client $client): self
-    {
-        $this->client = $client;
-
-        return $this;
-    }
+    
 
     public function getPaiement(): ?Paiement
     {
@@ -157,6 +148,18 @@ class Commande
         }
 
         $this->paiement = $paiement;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }

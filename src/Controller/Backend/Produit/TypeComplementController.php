@@ -29,18 +29,26 @@ class TypeComplementController extends AbstractController
     public function save(Request $request,EntityManagerInterface $em,ValidatorInterface $validator,TypeComplementRepository $repo)
     {
         if($request->request->has('btn_save')){
+            $image=$request->files->get('image');
+            $type = new TypeComplement();
 
 
-                if(empty($request->request->get('image'))){
+              if($image==null){
 
-                    $request->request->set('image','defaultImg');
+                 
+                   $type->setImage("Default.jpg");
+
+                }else{
+                    $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                    $image->move(
+                        $this->getParameter('images_directory')."/typeComplements",
+                        $fichier
+                    );
+                    $type->setImage($fichier);
+
 
                 }
-
-
-                $type = new TypeComplement();
                 $type->setNom($request->request->get('nom'));
-                $type->setImage($request->request->get('image'));
                 $errors = $validator->validate($type);
 
                 if (count($errors) > 0) {
@@ -57,11 +65,6 @@ class TypeComplementController extends AbstractController
         }elseif ($request->request->has('btn_edit')){
             $type= $repo->find($request->request->get('id'));
             $type->setNom($request->request->get('nom'));
-            if($request->request->get('image')){
-
-                $type->setImage($request->request->get('image'));
-
-            }
             $errors = $validator->validate($type);
             if (count($errors) > 0) {
 
@@ -103,7 +106,9 @@ class TypeComplementController extends AbstractController
                 'Cet Type  contient des Complements' );
 
         }else{
-            //dd($classe);
+            if($typeSelect->getImage() != "Default.jpg"){
+                unlink($this->getParameter('images_directory').'/typeComplements/'.$typeSelect->getImage());
+            }
             $em->remove($typeSelect);
             $em->flush();
         }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Paiement;
+namespace App\Service\Paiements;
 
 use App\Entity\Commande;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
