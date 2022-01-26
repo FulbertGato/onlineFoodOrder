@@ -3,14 +3,19 @@
 namespace App\Controller\Backend\Produit;
 
 use App\Entity\TypeComplement;
-use App\Repository\TypeComplementRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\TypeComplementRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ *
+ * @IsGranted("ROLE_GESTIONNAIRE")
+ */
 class TypeComplementController extends AbstractController
 {
     /**

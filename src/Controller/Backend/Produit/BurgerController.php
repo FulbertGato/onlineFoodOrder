@@ -2,18 +2,23 @@
 
 namespace App\Controller\Backend\Produit;
 
+use DateTime;
 use App\Entity\Burger;
 use App\Repository\BurgerRepository;
-use App\Repository\ConfigurationVarRepository;
-use App\Service\Generator\DigitalGenerator;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\Generator\DigitalGenerator;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\ConfigurationVarRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ *
+ * @IsGranted("ROLE_GESTIONNAIRE")
+ */
 class BurgerController extends AbstractController
 {
     /**

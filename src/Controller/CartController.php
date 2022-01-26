@@ -8,7 +8,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ *
+ * @IsGranted("ROLE_CLIENT")
+ */
 class CartController extends AbstractController
 {
     /**
@@ -16,6 +21,10 @@ class CartController extends AbstractController
      */
     public function index(CartService $serviceCart): Response
     {
+
+        $user = $this->getUser();
+        
+        
         
         
         return $this->render('cart/index.html.twig', [
@@ -31,6 +40,10 @@ class CartController extends AbstractController
 
     public function add($code, CartService $serviceCart){
 
+        $user = $this->getUser();
+        
+      
+
         $serviceCart->add($code);
         return $this->redirectToRoute('cart');
 
@@ -42,6 +55,10 @@ class CartController extends AbstractController
 
     public function remove($code, CartService $serviceCart){
 
+        $user = $this->getUser();
+        
+        
+
         $serviceCart->remove($code);
         return $this->redirectToRoute('cart');
 
@@ -52,6 +69,14 @@ class CartController extends AbstractController
      */
 
     public function removeQuantite($code, CartService $serviceCart){
+
+        $user = $this->getUser();
+        
+        if(in_array("ROLE_GESTIONNAIRE", $user->getRoles())){
+            
+            return $this->redirectToRoute('dashboard');
+            
+        }
 
         $serviceCart->removeItemQuantite($code);
         return $this->redirectToRoute('cart');

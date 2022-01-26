@@ -4,18 +4,24 @@ namespace App\Controller\Backend\Produit;
 
 
 use App\Entity\Menu;
-use App\Service\Generator\DigitalGenerator;
 use App\Repository\MenuRepository;
 use App\Repository\BurgerRepository;
 use App\Repository\ComplementRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\Generator\DigitalGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\ConfigurationVarRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
+/**
+ *
+ * @IsGranted("ROLE_GESTIONNAIRE")
+ */
 class MenuController extends AbstractController
 {
     /**

@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\AdresseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\AdresseRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=AdresseRepository::class)
+ * @UniqueEntity("nom")
  */
 class Adresse
 {
