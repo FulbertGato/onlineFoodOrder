@@ -52,22 +52,21 @@ class Produit
     private $detailCommandes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="produit")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $images;
+    private $image;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $etat;
+
 
     public function __construct()
     {
         $this->detailCommandes = new ArrayCollection();
-        $this->images = new ArrayCollection();
+       
     }
-
-  
-
-    
-
-   
-
     public function getId(): ?int
     {
         return $this->id;
@@ -151,35 +150,31 @@ class Produit
         return $this;
     }
 
-    /**
-     * @return Collection|Image[]
-     */
-    public function getImages(): Collection
+    public function getImage(): ?string
     {
-        return $this->images;
+        return $this->image;
     }
 
-    public function addImage(Image $image): self
+    public function setImage(?string $image): self
     {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setProduit($this);
-        }
+        $this->image = $image;
 
         return $this;
     }
 
-    public function removeImage(Image $image): self
+    public function getEtat(): ?int
     {
-        if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getProduit() === $this) {
-                $image->setProduit(null);
-            }
-        }
+        return $this->etat;
+    }
+
+    public function setEtat(int $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }
+
+    
 
     
 

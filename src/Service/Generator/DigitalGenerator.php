@@ -57,6 +57,7 @@ class DigitalGenerator
                     $ref="MN-".$id;
  
                 }
+                break;
             case 'commande':
                 if($lastId==null){
     

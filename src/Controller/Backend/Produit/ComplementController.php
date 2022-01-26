@@ -36,84 +36,38 @@ class ComplementController extends AbstractController
      */
     public function save(Request $request,EntityManagerInterface $em,ValidatorInterface $validator,ComplementRepository $repo,TypeComplementRepository $repoType,DigitalGenerator $gen,ConfigurationVarRepository $repoVar)
     {
-
+        $type= $repoType->find($request->request->get('type'));
+        $complement = new Complement();
         if($request->request->has('btn_save')){
-
-
-            if(empty($request->request->get('image'))){
-
-                $request->request->set('image','defaultImg');
-
-            }
-            $type= $repoType->find($request->request->get('type'));
-
-
-            $complement = new Complement();
-            
-            $complement ->setNom($request->request->get('nom'));
-            $complement ->setPrix(floatval($request->request->get('prix')));
-            $complement ->setTypeComplement($type);
-            $code=$gen->generateRef('complement');
-            $complement->setCode($code);
+            $complement=$this->createComplementObjet($request,$complement,$type);
+            $complement->setCode($gen->generateRef('complement'));
             $errors = $validator->validate($complement);
-
-           // dd($ref);
-            if (count($errors) > 0) {
-
-              dd($errors);
-              $this->addFlash(
-                    'error_message',
-                    'Veuillez verifier votre saissie'
-                );
-                return $this->redirectToRoute('complement');
-            }
+            if (count($errors) > 0) {dd($errors);}
             $em->persist($complement);
-            $em->flush();
             $var=$repoVar->find(1);
             $var->setLastIdComplement($var->getLastIdComplement()+1);
             $em->persist($var);
-            $em->flush();
-
-
         }
         elseif ($request->request->has('btn_edit')){
             $code=$request->request->get('code');
             $complement= $repo->findOneBy(['code' => $code]);
             $type= $repoType->find($request->request->get('type'));
-            $complement ->setNom($request->request->get('nom'));
-            $complement ->setPrix($request->request->get('prix'));
-            $complement ->setTypeComplement($type);
+            $complement=$this->createComplementObjet($request,$complement,$type);
             $errors = $validator->validate($complement);
-            if (count($errors) > 0) {
-              dd($errors);
-                $this->addFlash(
-                    'error_message',
-                    'Veuillez verifier votre saissie'
-                );
-                return $this->redirectToRoute('complement');
-            }
-
+            if (count($errors) > 0) {dd($errors);}
             $em->persist($complement);
-            $em->flush();
-
-
-        }
+         }
+        $em->flush();
         return $this->redirectToRoute('complements');
-
-
-
     }
 
     /**
-     * @Route("complement/edit/{code}", name="complement_edit",methods={"get"})
+     * @Route("produit/complement/edit/{code}", name="complement_edit",methods={"get"})
      */
     public function edit(Request $request,ComplementRepository $repo,TypeComplementRepository $repoType)
     {
-
         $code=$request->attributes->filter('code');
-       //dd($code);
         $complementSelect=$repo->findOneBy(['code' => $code]);
-       //dd($complementSelect);
         $complements=$repo->findAll();
         $types=$repoType->findAll();
         return $this->render('backend/produit/complement/index.html.twig', [
@@ -123,20 +77,58 @@ class ComplementController extends AbstractController
     }
 
     /**
-     * @Route("complement/delete/{code}", name="complement_del",methods={"get"})
+     * @Route("produit/complement/archiver/{code}", name="complement_del",methods={"get"})
      */
-    public function delete(EntityManagerInterface $em,Request $request,ComplementRepository $repo)
+    public function archiver(EntityManagerInterface $em,Request $request,ComplementRepository $repo)
     {
             $code=$request->attributes->filter('code');
-           // dd($code);
             $complement=$repo->findOneBy(['code' => $code]);
-
-            $em->remove($complement);
+            if($complement->getEtat() == 0 ){
+                $complement->setEtat(1);
+                foreach ($complement->getMenus() as $menu) {
+                    $menu->setPrix($menu->getPrix() - $complement->getPrix());
+                }
+            }else{
+                $complement->setEtat(0);
+                foreach ($complement->getMenus() as $menu) {
+                    $menu->setPrix($menu->getPrix() + $complement->getPrix());
+                }
+            }
+            $em->persist($complement);
             $em->flush();
         
         return $this->redirectToRoute('complements');
     }
 
 
+    public function createComplementObjet($request,$complement,$type){
+        $complement->setNom($request->request->get('nom')) 
+        ->setPrix(floatval($request->request->get('prix')))
+        ->setDetail($request->request->get('detail'))
+        ->setImage($this->imageCreate($request))
+        ->setTypeComplement($type)
+        ->setEtat($request->request->get('etat'));
+
+        return $complement;
+    }
+    public function imageCreate($request){
+        $image=$request->files->get('image');
+        if($image==null){      
+            $fichier="Default.jpg";
+         }else{
+            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+            $image->move(
+                $this->getParameter('images_directory')."/complements",
+                $fichier
+            );
+         }
+        return $fichier;
+    }
+
+    public function imageDelete($name){
+        if($name != "Default.jpg" ){
+            unlink($this->getParameter('images_directory').'/complements/'.$name);
+        }
+    }
 
 }

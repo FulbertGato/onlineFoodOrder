@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderController extends AbstractController
 {
     /**
-     * @Route("/orders", name="order_list")
+     * @Route("gestion/orders", name="order_list")
      */
     public function index(CommandeRepository $repo): Response
     {

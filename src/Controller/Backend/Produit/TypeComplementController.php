@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class TypeComplementController extends AbstractController
 {
     /**
-     * @Route("/type/complement", name="type_complement")
+     * @Route("produit/type/complement", name="type_complement")
      */
     public function index(TypeComplementRepository $repo): Response
     {
@@ -24,7 +24,7 @@ class TypeComplementController extends AbstractController
     }
 
     /**
-     * @Route("/type/complement/save", name="type_complement_save",methods={"POST"})
+     * @Route("produit/type/complement/save", name="type_complement_save",methods={"POST"})
      */
     public function save(Request $request,EntityManagerInterface $em,ValidatorInterface $validator,TypeComplementRepository $repo)
     {
@@ -87,7 +87,7 @@ class TypeComplementController extends AbstractController
     }
 
      /**
-     * @Route("complement/type/edit/{id}", name="type_complement_edit",methods={"get"})
+     * @Route("produit/complement/type/edit/{id}", name="type_complement_edit",methods={"get"})
      */
     public function edit(TypeComplementRepository $repoType,TypeComplement $typeSelect)
     {
@@ -96,7 +96,7 @@ class TypeComplementController extends AbstractController
             "types" =>  $typescomplements , "typeSelect"=>$typeSelect  ]);
     }
     /**
-     * @Route("g/complement/t/d/{id}", name="type_complement_del",methods={"get"})
+     * @Route("produit/complement/t/d/{id}", name="type_complement_del",methods={"get"})
      */
     public function delete(EntityManagerInterface $em,TypeComplement $typeSelect)
     {

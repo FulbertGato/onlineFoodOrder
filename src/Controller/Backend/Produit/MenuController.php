@@ -35,8 +35,8 @@ class MenuController extends AbstractController
      */
     public function add(BurgerRepository $repoBurger,ComplementRepository $repoComplement): Response
     {
-        $burgers=$repoBurger->findAll();
-        $complements=$repoComplement->findAll();
+        $burgers=$repoBurger->findBy(['etat' => 0]);
+        $complements=$repoComplement->findBy(['etat' => 0] );
         return $this->render('backend/produit/menu/add.html.twig', [
             'burgers'=>$burgers,
             'complements'=>$complements
@@ -49,8 +49,8 @@ class MenuController extends AbstractController
      */
     public function store(Request $request, BurgerRepository $repoBurger,ComplementRepository $repoComplement,DigitalGenerator $gen,ConfigurationVarRepository $repoVar,EntityManagerInterface $em,ValidatorInterface $validator): Response
     {
-         $burger=$repoBurger->findOneBy(['code' => $request->request->get('burger')]);
-         $codes=$request->request->get('complements');
+        $burger=$repoBurger->findOneBy(['code' => $request->request->get('burger')]);
+        $codes=$request->request->get('complements');
         
         $prix=0;
         if($codes == null){
@@ -72,12 +72,13 @@ class MenuController extends AbstractController
          $prix=$burger->getPrix()+$prix;
 
          $menu->setNom($request->request->get('nom'));
+         $menu->setEtat($request->request->get('etat'));
          $menu->setPrix($prix);
          $menu->setTempsCuisson($burger->getTempsCuisson());
          $ref=$gen->generateRef('menu');
          $menu->setCode($ref);
          $menu->setBurger($burger);
-
+         $menu->setImage($this->imageCreate($request));
          $errors = $validator->validate($menu);
             if (count($errors) > 0) {
               $this->addFlash(
@@ -133,12 +134,15 @@ class MenuController extends AbstractController
                 $complements[]=$complement;
                 $prix=  $complement->getPrix()+$prix;
             }
+            $this->imageDelete($menu->getImage());
             $menu->setComplements($complements);
             $prix=$burger->getPrix()+$prix;
             $menu->setNom($request->request->get('nom'));
             $menu->setPrix($prix);
+            $menu->setEtat($request->request->get('etat'));
             $menu->setTempsCuisson($burger->getTempsCuisson());
             $menu->setBurger($burger);
+            $menu->setImage($this->imageCreate($request));
             $errors = $validator->validate($menu);
             if (count($errors) > 0) {
                 $this->addFlash(
@@ -163,10 +167,33 @@ class MenuController extends AbstractController
         $menu=$repo->findOneBy(['code' => $code]);
 
         if($menu !=null){
+            $this->imageDelete($menu->getImage());
             $em->remove($menu);
             $em->flush();
         }
 
         return $this->redirectToRoute('menus');
+    }
+
+
+
+    public function imageCreate($request){
+        $image=$request->files->get('image');
+        if($image==null){      
+            $fichier="Default.jpg";
+         }else{
+            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+            $image->move(
+                $this->getParameter('images_directory')."/menus",
+                $fichier
+            );
+         }
+        return $fichier;
+    }
+
+    public function imageDelete($name){
+        if($name != "Default.jpg" ){
+            unlink($this->getParameter('images_directory').'/menus/'.$name);
+        }
     }
 }

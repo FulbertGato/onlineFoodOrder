@@ -26,5 +26,17 @@ class PaiementController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/gestion/paiement", name="paiement_list")
+     */
+    public function paiementsList(): Response
+    {
+
+
+        return $this->render('paiement/list.paiement.html.twig', [
+
+        ]);
+    }
+
     
 }
