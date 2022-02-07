@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-
+use App\Repository\PaiementRepository;
 use App\Service\Panier\CartService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,12 +29,13 @@ class PaiementController extends AbstractController
     /**
      * @Route("/gestion/paiement", name="paiement_list")
      */
-    public function paiementsList(): Response
+    public function paiementsList(PaiementRepository $repo): Response
     {
+        $payments= $repo->findAll();
 
 
         return $this->render('paiement/list.paiement.html.twig', [
-
+            'payments' => $payments
         ]);
     }
 

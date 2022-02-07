@@ -56,6 +56,11 @@ class Commande
      */
     private $client;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $total;
+
     public function __construct()
     {
         $this->detailCommandes = new ArrayCollection();
@@ -162,6 +167,21 @@ class Commande
         $this->client = $client;
 
         return $this;
+    }
+
+    public function getTotal() {
+        
+
+        return $this->total;
+
+    }
+
+    public function setTotal(float $total): self {
+        
+            $this->total= $total;
+        
+        return $this;
+
     }
 
     

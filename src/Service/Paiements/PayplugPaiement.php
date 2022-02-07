@@ -2,6 +2,7 @@
 
 namespace App\Service\Paiements;
 
+use Payplug\Payment;
 use Payplug\Payplug;
 use App\Entity\Commande;
 
@@ -18,26 +19,24 @@ class PayplugPaiement
         ));
     }
     public function pay_action(Commande $commande){
-        $amount=0;
-        foreach ($commande->getDetailCommandes() as $detail) {
-            $amount= $detail->getMontant()+$amount;
-        }
-        $amount = $amount * 0.0015 ;
+        $amount=$commande->getTotal();
+        
+        $amount = intval($amount * 0.0015)  ;
         $num=str_replace('#IN','',$commande->getNumeroCommande());
         // $commande->setNumeroCommande($num);
 
-        $payment = \Payplug\Payment::create(array(
+        $payment = Payment::create(array(
             'amount'           => $amount * 100,
             'currency'         => 'EUR',
             'billing'  => array(
                 'title'        => 'mr',
-                'first_name'   => 'John',
-                'last_name'    => 'Watson',
+                'first_name'   => $commande->getClient()->getNom(),
+                'last_name'    => $commande->getClient()->getPrenom(),
                 'email'        => $commande->getClient()->getEmail(),
-                'address1'     => '221B Baker Street',
-                'postcode'     => 'NW16XE',
-                'city'         => 'London',
-                'country'      => 'GB',
+                'address1'     => '12 avenue cheick anta diop',
+                'postcode'     => '12500',
+                'city'         => 'Dakar',
+                'country'      => 'SN',
                 'language'     => 'en'
             ),
             'shipping'  => array(
@@ -45,11 +44,11 @@ class PayplugPaiement
                 'first_name'    => $commande->getClient()->getPrenom(),
                 'last_name'     => $commande->getClient()->getNom(),
                 'email'         => $commande->getClient()->getEmail(),
-                'address1'      => '221B Baker Street',
-                'postcode'      => 'NW16XE',
-                'city'          => 'London',
-                'country'       => 'GB',
-                'language'      => 'en',
+                'address1'     => '12 avenue cheick anta diop',
+                'postcode'     => '12500',
+                'city'         => 'Dakar',
+                'country'      => 'SN',
+                'language'     => 'en',
                 'delivery_type' => 'BILLING'
             ),
             'hosted_payment'   => array(

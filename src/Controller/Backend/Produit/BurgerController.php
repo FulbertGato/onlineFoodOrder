@@ -130,7 +130,7 @@ class BurgerController extends AbstractController
          }else{
             $fichier = md5(uniqid()) . '.' . $image->guessExtension();
             $image->move(
-                $this->getParameter('images_directory')."/burgers",
+                $this->getParameter('images_directory')."/product",
                 $fichier
             );
          }
@@ -140,7 +140,7 @@ class BurgerController extends AbstractController
 
     public function imageDelete($name){
         if($name != "Default.jpg" ){
-            unlink($this->getParameter('images_directory').'/burgers/'.$name);
+            unlink($this->getParameter('images_directory').'/product/'.$name);
         }
     }
 

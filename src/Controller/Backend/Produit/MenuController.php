@@ -190,7 +190,7 @@ class MenuController extends AbstractController
          }else{
             $fichier = md5(uniqid()) . '.' . $image->guessExtension();
             $image->move(
-                $this->getParameter('images_directory')."/menus",
+                $this->getParameter('images_directory')."/product",
                 $fichier
             );
          }
@@ -198,8 +198,8 @@ class MenuController extends AbstractController
     }
 
     public function imageDelete($name){
-        if($name != "Default.jpg" ){
-            unlink($this->getParameter('images_directory').'/menus/'.$name);
+        if($name != "default.jpg" ){
+           unlink($this->getParameter('images_directory').'/product/'.$name);
         }
     }
 }

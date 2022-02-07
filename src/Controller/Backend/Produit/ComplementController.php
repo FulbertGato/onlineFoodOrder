@@ -124,7 +124,7 @@ class ComplementController extends AbstractController
          }else{
             $fichier = md5(uniqid()) . '.' . $image->guessExtension();
             $image->move(
-                $this->getParameter('images_directory')."/complements",
+                $this->getParameter('images_directory')."/product",
                 $fichier
             );
          }
@@ -133,7 +133,7 @@ class ComplementController extends AbstractController
 
     public function imageDelete($name){
         if($name != "Default.jpg" ){
-            unlink($this->getParameter('images_directory').'/complements/'.$name);
+            unlink($this->getParameter('images_directory').'/product/'.$name);
         }
     }
 

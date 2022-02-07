@@ -14,6 +14,10 @@ class PaiementService
         if($method == "card" ){
            $intent = new PayplugPaiement();
            return $intent->pay_action($commande); 
+        }else if($method == "mobile"){
+
+            $intent = new MobilePaiement();
+            return $intent->payAction($commande); 
         }
         dd("error");
     }

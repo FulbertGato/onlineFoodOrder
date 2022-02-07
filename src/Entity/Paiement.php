@@ -38,6 +38,16 @@ class Paiement
      */
     private $commande;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $urlPaiement;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $qrCode;
+
     
 
   
@@ -91,6 +101,30 @@ class Paiement
     public function setCommande(Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getUrlPaiement(): ?string
+    {
+        return $this->urlPaiement;
+    }
+
+    public function setUrlPaiement(?string $urlPaiement): self
+    {
+        $this->urlPaiement = $urlPaiement;
+
+        return $this;
+    }
+
+    public function getQrCode(): ?string
+    {
+        return $this->qrCode;
+    }
+
+    public function setQrCode(string $qrCode): self
+    {
+        $this->qrCode = $qrCode;
 
         return $this;
     }

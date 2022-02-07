@@ -2,6 +2,7 @@
 
 namespace App\Controller\Frontend\Account;
 
+use App\Entity\Commande;
 use App\Repository\ZoneRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -65,5 +66,33 @@ class AccountController extends AbstractController
             'cart' =>$this->session->get('cart',[])
 
             ]);
+    }
+
+     /**
+     * @Route("/mon-compte/setting", name="my_setting")
+     */
+
+    public function setting(){
+
+        return $this->render('frontend/account/setting.html.twig',[
+            'user' =>$this->getUser(),
+            'cart' =>$this->session->get('cart',[])
+            ]);
+
+    }
+
+    /**
+     * @Route("/mon-compte/order/{id}", name="order_tracker")
+     */
+
+    public function orderTracker(Commande $commande){
+
+        return $this->render('frontend/account/trackOrder.html.twig',[
+            //'user' => $this->getUser(),
+            'cart' => $this->session->get('cart',[]),
+            'commande' => $commande
+            
+            ]);
+
     }
 }

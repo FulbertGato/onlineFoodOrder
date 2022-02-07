@@ -18,7 +18,7 @@ class ClientsFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
 
-        for ($i = 1; $i <=20; $i++) {
+        for ($i = 1; $i <=10; $i++) {
             $data= new Client();
             $data->setNom("Nom Client".$i);
             $data->setPrenom("Prenom Client ".$i)

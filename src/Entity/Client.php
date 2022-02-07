@@ -23,7 +23,6 @@ class Client extends  User
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
-     * @Assert\Regex("/^(\\+|00)(221)(70|76|77|78|33)([0-9]{7})/")
      * @Assert\NotBlank
      */
     private $telephone;
