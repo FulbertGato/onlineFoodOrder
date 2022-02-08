@@ -28,7 +28,7 @@ class Commande
     private $numeroCommande;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="date")
      * @Assert\NotBlank
      */
     private $createAt;
@@ -84,7 +84,7 @@ class Commande
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeImmutable
+    public function getCreateAt()
     {
         return $this->createAt;
     }

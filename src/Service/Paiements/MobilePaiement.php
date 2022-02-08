@@ -11,8 +11,8 @@ class MobilePaiement{
 
     public function __construct()
     {
-        $this->apiKey="";
-        $this->apiSecret="";
+        $this->apiKey=$_ENV['PAYTECH_PUBLIC'];
+        $this->apiSecret=$_ENV['PAYTECH_PRIVATE'];
     }
    
     public function payAction(Commande $commande){
@@ -34,9 +34,9 @@ class MobilePaiement{
                 ->setCurrency("XOF")
                 ->setRefCommand($item->getNumeroCommande())
                 ->setNotificationUrl([
-                    'ipn_url' => 'https://localhost:7000/order/success/'.$commande->getId(), //only https
-                    'success_url' => 'https://localhost:7000/order/success/'.$commande->getId(),
-                    'cancel_url' =>  'https://localhost:7000/order/cancel/'.$commande->getId(),
+                    'ipn_url' => $_ENV['APP_URL'].'order/success/'.$commande->getId(), //only https
+                    'success_url' => $_ENV['APP_URL'].'order/success/'.$commande->getId(),
+                    'cancel_url' =>  $_ENV['APP_URL'].'order/cancel/'.$commande->getId(),
                 ])->send();
     
                // dd($jsonResponse);

@@ -14,7 +14,7 @@ class PayplugPaiement
     public function __construct()
     {
         Payplug::init(array(
-            'secretKey' => '',
+            'secretKey' => $_ENV['PAYPLUG_API'],
             'apiVersion' => '2019-08-06',
         ));
     }
@@ -52,10 +52,10 @@ class PayplugPaiement
                 'delivery_type' => 'BILLING'
             ),
             'hosted_payment'   => array(
-                'return_url'     => 'https://localhost:7000/order/confirm/'.$num,
-                'cancel_url'     => 'https://localhost:7000/order/confirm/'.$num
+                'return_url'     => $_ENV['APP_URL'].'order/confirm/'.$num,
+                'cancel_url'     => $_ENV['APP_URL'].'order/confirm/'.$num
             ),
-            'notification_url' => 'https://localhost:7000/order/notif/'.$num,
+            'notification_url' => $_ENV['APP_URL'].'order/notif/'.$num,
             'metadata'         => array(
                 'customer_id'    => $num,
             )

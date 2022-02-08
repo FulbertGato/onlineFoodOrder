@@ -47,9 +47,10 @@ class OrderController extends AbstractController {
         $em->flush();
 
             if($request->request->get('pay-method')){
+                
                 if($request->request->get('pay-method') == "cash"){
                     $paiement= new Paiement();
-                    $paiement->setIdPaiement("")
+                    $paiement->setIdPaiement("livraison")
                             ->setCommande($commande)
                             ->setMethode("cash")
                             ->setStatus("unpaid")
