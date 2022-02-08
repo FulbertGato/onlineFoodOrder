@@ -1,0 +1,137 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Burgers{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-body">
+
+                    <h4 class="card-title">Les  burgers</h4>
+                    <p class="card-title-desc">DataTables has most features enabled by
+                        default.</code>.
+                    </p>
+
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                        <tr>
+
+                            <th>Image</th>
+                            <th>Code</th>
+                            <th>Nom</th>
+                            <th>Prix</th>
+                            <th>Etat</th>
+                            <th>Actions</th>
+                            
+                        </tr>
+                        </thead>
+
+
+                        <tbody>
+                        {% for burger in burgers %}
+                        <tr>
+                            <td><image class="avatar-xs rounded-circle me-2" src="{{asset("uploads/product/")}}{{burger.image}}"></td>
+                            <td>{{burger.code}}</td>
+                            <td>{{burger.nom}}</td>
+                            <td>{{burger.prix}}</td>
+                            <td>
+                                {% if burger.etat == 0 %}
+                                    Active
+                                {% else %}
+                                    Archiver
+                                {% endif %}
+                            </td>
+                            <td>
+                             <a  href="{{ path("burger_edit",{code:burger.code}) }}"  class="btn btn-warning"  >Modifier </a>
+                                {% if burger.etat == 0 %}
+                                    <a  href="{{ path("burger_del",{code:burger.code}) }}" class="btn btn-danger" >Archiver</a>
+                                {% else %}
+                                    <a  href="{{ path("burger_del",{code:burger.code}) }}" class="btn btn-danger" >Activer</a>
+                                {% endif %}
+                             
+                    
+                            </td>
+                            
+                        </tr>
+                        {% endfor %}
+                        
+                        
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div> <!-- end col -->
+        <div class="col-4">
+               
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Ajouter Burger</h4>
+                        <form class="custom-validation" action="{{path('burger_save')}}" method="post" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label class="form-label">Nom</label>
+                                <input type="text" class="form-control" required name="nom" value="{% if burgerSelect is defined %}{{burgerSelect.nom}}{% endif %}"/>
+                                <input hidden type="text" name="code" value="{% if burgerSelect is defined %}{{burgerSelect.code}}{% else %} 0 {% endif %}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Prix</label>
+                                <input type="text" class="form-control" required name="prix" value="{% if burgerSelect is defined %}{{burgerSelect.prix}}{% endif %}"/>
+                                
+                            </div>
+     
+                            <div class="mb-3">
+
+                                <label class="form-label">Temps cuisson</label>
+                                <input type="time" class="form-control" required name="temps" value="{% if burgerSelect is defined %}00:10{% endif %}"/>
+                                
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Details</label>
+                                <div>
+                                    <textarea required class="form-control" rows="4" name="detail">{% if burgerSelect is defined %}{{burgerSelect.detail}}{% endif %}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                               <label class="form-label">Etat</label>
+                               
+                                <select class="form-select" name="etat">
+                                        <option value="0" {% if burgerSelect is defined and burgerSelect.etat == 0 %}selected{% endif %}>Active</option>
+                                        <option value="1" {% if burgerSelect is defined and burgerSelect.etat == 1 %}selected{% endif %}>Archiver</option>       
+                                </select>
+                               
+                            </div>
+
+                            
+
+                            <div class="mb-3">
+                                <label class="form-label">Image</label>
+                                <input type="file" class="form-control"  name="image" />
+                            </div>
+
+
+                            <div>
+                                <div>
+                                {% if burgerSelect is defined %}
+                                    <button type="submit" name="btn_edit" class="btn btn-warning waves-effect waves-light me-1">Modifier</button>
+                                {% else %}
+                                    <button  type="submit" name="btn_save" class="btn btn-primary waves-effect waves-light me-1">
+                                        Ajouter
+                                    </button>
+                                {% endif %}
+                                    
+                                    <button type="reset" class="btn btn-secondary waves-effect">
+                                        Annuler
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+        
+                </div>
+            </div>
+         </div>
+    </div> <!-- end row -->
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %} Les Commandes{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div>
+                                            
+           
+            <a type="button"  href="#" class="btn btn-info waves-effect waves-light mb-3"><i class="mdi mdi-apps me-1"></i>TODAY</a>
+            <a type="button"  href="{{path('order_list_status',{status:"TERMINER"})}}" class="btn btn-warning waves-effect waves-light mb-3"><i class="mdi mdi-apps me-1"></i>TERMINER</a>
+            <a type="button"  href="{{path('order_list_status',{status:"ATTENTE"})}}" class="btn btn-primary waves-effect waves-light mb-3"><i class="mdi mdi-apps me-1"></i>ATTENTE</a>
+            <a type="button"  href="{{path('order_list_status',{status:"CONFIRMER"})}}" class="btn btn-success waves-effect waves-light mb-3"><i class="mdi mdi-apps me-1"></i>CONFIRMER</a>
+             <a type="button"  href="{{path('order_list_status',{status:"PRET"})}}" class="btn btn-success waves-effect waves-light mb-3"><i class="mdi mdi-apps me-1"></i>PRET</a>
+            <a type="button"  href="{{path('order_list_status',{status:"ANNULER"})}}" class="btn btn-danger waves-effect waves-light mb-3"><i class="mdi mdi-apps me-1"></i>ANNULER</a>
+            
+         </div>
+         <div class="table-responsive mb-4">
+             <table class="table table-centered datatable dt-responsive nowrap table-card-list" style="border-collapse: collapse; border-spacing: 0 12px; width: 100%;">
+                <thead>
+                    <tr class="bg-transparent">
+                        
+                        <th>Numero</th>
+                        <th>Nom client</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Payment status</th>
+                        <th>View Details</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    
+                
+                        <tr>
+                            <td><a href="javascript: void(0);" class="text-body fw-bold">{{order.numeroCommande}}</a> </td>
+                            <td>{{order.client.nom}}</td>
+                            <td>
+                                {{ order.createAt|date('Y-m-d') }}
+                            </td>
+                            <td>
+                                {{order.total}} CFA
+                            </td>
+                            <td>
+                                {% if order.status == "en attente"  %}
+                                    <span class="badge rounded-pill bg-soft-warning font-size-12">EN ATTENTE</span>
+                                {% endif %}
+                                {% if order.status == "CONFIRMER"  %}
+                                    <span class="badge rounded-pill bg-soft-info font-size-12">{{order.status}}</span>
+                                {% endif %}
+                                {% if order.status == "PRET"  %}
+                                    <span class="badge rounded-pill bg-soft-success font-size-12">{{order.status}}</span>
+                                {% endif %}
+
+                                {% if order.status == "ANNULER"  %}
+                                    <span class="badge rounded-pill bg-soft-danger font-size-12">{{order.status}}</span>
+                                {% endif %}
+
+                                {% if order.status == "TERMINER"  %}
+                                    <span class="badge rounded-pill bg-soft-primary font-size-12">{{order.status}}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                 
+                                {% if order.paiement.status == "unpaid"  %}
+                                    <span class="badge rounded-pill bg-soft-danger font-size-12">{{order.paiement.status}}</span>
+                                {% endif %}
+
+                                 {% if order.paiement.status == "paid"  %}
+                                    <span class="badge rounded-pill bg-soft-info font-size-12">{{order.paiement.status}}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a  href="{{path('order_details',{id:order.id})}}" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
+                                    View Details
+                                </a>
+                            </td>
+                                                    
+                            
+                        </tr>
+                    {% endfor %}
+
+                  
+                    
+                </tbody>
+            </table>
+        </div>
+        <!-- end table -->
+    </div>
+</div>
+
+{% endblock %}

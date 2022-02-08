@@ -1,0 +1,85 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Les types de Complements{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-body">
+
+                    <h4 class="card-title">Les types de Complements</h4>
+                    <p class="card-title-desc">DataTables has most features enabled by
+                        default.</code>.
+                    </p>
+
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                        <tr>
+
+                            <th>Image</th>
+                            <th>Nom</th>
+                            <th>Actions</th>
+                            
+                        </tr>
+                        </thead>
+
+
+                        <tbody>
+                        {% for type in types %}
+                        <tr>
+                            <td><image class="avatar-xs rounded-circle me-2" src="{{asset("uploads/typeComplements/")}}{{type.image}}"></image></td>
+                            <td>{{type.nom}}</td>
+                            <td>
+                                <a  href="{{ path("type_complement_edit",{id:type.id}) }}"  class="btn btn-warning"  >Modifier </a>
+                                <a  href="{{ path("type_complement_del",{id:type.id}) }}" class="btn btn-danger" >Supprimer</a>
+                            </td>
+                            
+                        </tr>
+                        {% endfor %}
+                        
+                        
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div> <!-- end col -->
+        <div class="col-4">
+               
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Ajouter type Complement</h4>
+                        <form class="custom-validation" action="{{path('type_complement_save')}}" method="post" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label class="form-label">Nom</label>
+                                <input type="text" class="form-control" required name="nom" value="{% if typeSelect is defined %}{{typeSelect.nom}}{% endif %}"/>
+                                <input hidden type="text" name="id" value="{% if typeSelect is defined %}{{typeSelect.id}}{% else %} 0 {% endif %}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Image</label>
+                                <input type="file" class="form-control"  name="image"/>
+                            </div>
+                            <div>
+                                <div>
+                                {% if typeSelect is defined %}
+                                    <button type="submit" name="btn_edit" class="btn btn-warning waves-effect waves-light me-1">Modifier</button>
+                                {% else %}
+                                    <button  type="submit" name="btn_save" class="btn btn-primary waves-effect waves-light me-1">
+                                        Ajouter
+                                    </button>
+                                {% endif %}
+                                    
+                                    <button type="reset" class="btn btn-secondary waves-effect">
+                                        Annuler
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+        
+                </div>
+            </div>
+         </div>
+    </div> <!-- end row -->
+{% endblock %}

@@ -1,0 +1,168 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Ajouter Menu{% endblock %}
+ {% block stylesheets %}
+  <!-- select2 css -->
+        <link href="{{asset('/assets/backend/libs/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css" />
+
+        <!-- dropzone css -->
+        <link href="{{asset('/assets/backend/libs/dropzone/min/dropzone.min.css')}}" rel="stylesheet" type="text/css" />
+
+        <!-- Bootstrap Css -->
+        <link href="{{asset('/assets/backend/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <!-- Icons Css -->
+        <link href="{{asset('/assets/backend/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+        <!-- App Css-->
+        <link href="{{asset('/assets/backend/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block body %}
+ <div class="row">
+    <div class="col-lg-12">
+        <div id="addproduct-accordion" class="custom-accordion">
+            <div class="card">
+                <a href="#addproduct-billinginfo-collapse" class="text-dark" data-bs-toggle="collapse" aria-expanded="true" aria-controls="addproduct-billinginfo-collapse">
+                    <div class="p-4">
+                                                
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 me-3">
+                                <div class="avatar-xs">
+                                    <div class="avatar-title rounded-circle bg-soft-primary text-primary">
+                                        01
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 overflow-hidden">
+                                <h5 class="font-size-16 mb-1">Composition du menu</h5>
+                               
+                            </div>
+                            <div class="flex-shrink-0">
+                                <i class="mdi mdi-chevron-up accor-down-icon font-size-24"></i>
+                            </div>
+                                                    
+                        </div>
+                                                
+                    </div>
+                </a>
+                <form method="post" action="{% if menuSelect is defined %} {{path('menus_update')}} {% else %} {{path('menus_store')}} {% endif %}" enctype="multipart/form-data">
+                    <div id="addproduct-billinginfo-collapse" class="collapse show" data-bs-parent="#addproduct-accordion">
+                        <div class="p-4 border-top">
+                        
+                                <div class="mb-3">
+                                    <label class="form-label" for="productname">Nom du menu</label>
+                                    <input id="productname" name="nom" type="text" class="form-control"  value="{% if menuSelect is defined %}{{menuSelect.nom}}{% endif %}">
+                                </div>
+                                <div class="row">
+                                    
+                                    <div class="col-lg-4">
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">Image</label>
+                                            <input type="file" class="form-control"  name="image"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        
+                                        <div class="mb-3">
+                                                <label class="form-label" for="price">Prix</label>
+                                                <input id="price" name="prix" value="{% if menuSelect is defined %}{{menuSelect.prix}}{% endif %}" type="text" class="form-control" readonly>
+                                                <input hidden type="text" name="code" value="{% if menuSelect is defined %}{{menuSelect.code}}{% else %} 0 {% endif %}">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-2">
+                                        <div class="mb-3">
+                                            <label class="form-label" >Temps cuisson</label>
+                                            <input  name="temps" type="time" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="mb-3">
+                                            <label class="form-label">Etat</label>
+                                            
+                                                <select class="form-select" name="etat">
+                                                        <option value="0" {% if menuSelect is defined and menuSelect.etat == 0 %}selected{% endif %}>Active</option>
+                                                        <option value="1" {% if menuSelect is defined and menuSelect.etat == 1 %}selected{% endif %}>Archiver</option>       
+                                                </select>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label" class="control-label">Burger</label>
+                                            <select class="form-control select2" Required name="burger">
+                                                <option disabled {% if menuSelect is defined  %} {% else %} selected {% endif %} >Select</option>
+                                                {% for burger in burgers %}
+                                                    <option value="{{burger.code}}"  {% if menuSelect is defined and menuSelect.burger.code == burger.code %} selected {% endif %}>{{burger.nom}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label" class="control-label">Complements</label>
+                    
+                                                <select class="select2 form-control select2-multiple" multiple="multiple" name="complements[]"  data-placeholder="Choose ...">
+                                                    
+                                                    {% for complement in complements %}
+
+                                                            <option value="{{complement.code}}" {% if menuSelect is defined and  complement in menuSelect.complements %} selected {% endif %}>{{complement.nom}}</option>
+                                                    {% endfor %}
+                                                    
+                                                </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-0">
+                                    <label class="form-label" for="productdesc">Product Description</label>
+                                    <textarea class="form-control" id="productdesc" rows="4"></textarea>
+                                </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col text-end"> 
+                            <button type="submit" class="btn btn-success"> <i class="uil uil-file-alt me-1"></i> Sauvegarder </button>                        
+                            <button  type="reset" class="btn btn-danger"> <i class="uil uil-times me-1"></i> Cancel </button>
+
+                        </div> <!-- end col -->
+                    </div> <!-- end row-->
+                </form>
+            </div>                         
+        </div>
+    </div>
+</div>
+<!-- end row -->
+
+
+
+                          <!-- select 2 plugin -->
+       
+{% endblock %}
+{% block javascripts %}
+     <!-- JAVASCRIPT -->
+        <script src="{{asset('/assets/backend/libs/jquery/jquery.min.js')}}"></script>
+        <script src="{{asset('/assets/backend/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{asset('/assets/backend/libs/metismenu/metisMenu.min.js')}}"></script>
+        <script src="{{asset('/assets/backend/libs/simplebar/simplebar.min.js')}}"></script>
+        <script src="{{asset('/assets/backend/libs/node-waves/waves.min.js')}}"></script>
+        <script src="{{asset('/assets/backend/libs/waypoints/lib/jquery.waypoints.min.js')}}"></script>
+        <script src="{{asset('/assets/backend/libs/jquery.counterup/jquery.counterup.min.js')}}"></script>
+        
+        <!-- select 2 plugin -->
+        <script src="{{asset('/assets/backend/libs/select2/js/select2.min.js')}}"></script>
+        
+        <!-- dropzone plugin -->
+        <script src="{{asset('/assets/backend/libs/dropzone/min/dropzone.min.js')}}"></script>
+        <!-- init js -->
+        <script src="{{asset('/assets/backend/js/pages/ecommerce-add-product.init.js')}}"></script>
+        
+        
+
+       <!-- App js -->
+        <script src="{{asset('/assets/backend/js/app.js')}}"></script>
+
+{% endblock %}

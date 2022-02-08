@@ -20,5 +20,3 @@
 ###< phpunit/phpunit ###
 .env
 .env.test
-assets/
-templates/

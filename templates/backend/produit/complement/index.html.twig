@@ -1,0 +1,133 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Les types de Complements{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-body">
+
+                    <h4 class="card-title">Les  Complements</h4>
+                    <p class="card-title-desc">DataTables has most features enabled by
+                        default.</code>.
+                    </p>
+
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                        <tr>
+
+                            <th>Image</th>
+                            <th>Nom</th>
+                            <th>Prix</th>
+                            <th>Type</th>
+                            <th>Etat</th>
+                            <th>Actions</th>
+                            
+                        </tr>
+                        </thead>
+
+
+                        <tbody>
+                        {% for complement in complements %}
+                        <tr>
+                            <td><image class="avatar-xs rounded-circle me-2" src="{{asset("uploads/product/")}}{{complement.image}}"></td>
+                            <td>{{complement.nom}}</td>
+                            <td>{{complement.prix}}</td>
+                            <td>{{complement.typeComplement.nom}}</td>
+                            <td>
+                                {% if complement.etat == 0 %}
+                                    Active
+                                {% else %}
+                                    Archiver
+                                {% endif %}
+                            </td>
+                            <td>
+                             <a  href="{{ path("complement_edit",{code:complement.code}) }}"  class="btn btn-warning"  >Modifier </a>
+                               {% if complement.etat == 0 %}
+                                    <a  href="{{ path("complement_del",{code:complement.code}) }}" class="btn btn-danger" >Archiver</a>
+                                {% else %}
+                                   <a  href="{{ path("complement_del",{code:complement.code}) }}" class="btn btn-success" >Activer</a>
+                                {% endif %}
+                             
+                    
+                            </td>
+                            
+                        </tr>
+                        {% endfor %}
+                        
+                        
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div> <!-- end col -->
+        <div class="col-4">
+               
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Ajouter Complement</h4>
+                        <form class="custom-validation" action="{{path('complement_save')}}" method="post" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label class="form-label">Nom</label>
+                                <input type="text" class="form-control" required name="nom" value="{% if complementSelect is defined %}{{complementSelect.nom}}{% endif %}"/>
+                                <input hidden type="text" name="code" value="{% if complementSelect is defined %}{{complementSelect.code}}{% else %} 0 {% endif %}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Prix</label>
+                                <input type="text" class="form-control" required name="prix" value="{% if complementSelect is defined %}{{complementSelect.prix}}{% endif %}"/>
+                                
+                            </div>
+
+                            <div class="mb-3">
+                               <label class="form-label">Types</label>
+                               
+                                <select class="form-select" name="type">
+                                    {% for type in types %}
+                                        <option value="{{ type.id }}" {% if complementSelect is defined and complementSelect.typeComplement.id == type.id %}selected{% endif %}>{{type.nom}}</option>
+                                    {% endfor %}
+                                    
+                                </select>
+                               
+                            </div>
+
+                            <div class="mb-3">
+                               <label class="form-label">Etat</label>
+                               
+                                <select class="form-select" name="etat">
+                                        <option value="0" {% if complementSelect is defined and complementSelect.etat == 0 %}selected{% endif %}>Active</option>
+                                        <option value="1" {% if complementSelect is defined and complementSelect.etat == 1 %}selected{% endif %}>Archiver</option>       
+                                </select>
+                               
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Image</label>
+                                <input type="file" class="form-control"  name="image"/>
+                            </div>
+
+
+                            <div>
+                                <div>
+                                {% if complementSelect is defined %}
+                                    <button type="submit" name="btn_edit" class="btn btn-warning waves-effect waves-light me-1">Modifier</button>
+                                {% else %}
+                                    <button  type="submit" name="btn_save" class="btn btn-primary waves-effect waves-light me-1">
+                                        Ajouter
+                                    </button>
+                                {% endif %}
+                                    
+                                    <button type="reset" class="btn btn-secondary waves-effect">
+                                        Annuler
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+        
+                </div>
+            </div>
+         </div>
+    </div> <!-- end row -->
+{% endblock %}

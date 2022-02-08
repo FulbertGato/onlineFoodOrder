@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        
+        <meta charset="utf-8" />
+        <title>Paiement | </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+        <meta content="Themesbrand" name="author" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="{{asset('/assets/backend/images/favicon.ico')}}">
+
+          <!-- Bootstrap Css -->
+        <link href="{{asset('/assets/backend/css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <!-- Icons Css -->
+        <link href="{{asset('/assets/backend/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+        <!-- App Css-->
+        <link href="{{asset('/assets/backend/css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    
+    <body>
+
+    <!-- <body data-layout="horizontal" data-topbar="colored"> -->
+
+        <!-- Begin page -->
+        
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            
+
+            <div class="page-content">
+
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-flex align-items-center justify-content-between">
+                                    <h4 class="mb-0">Checkout</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
+                                            <li class="breadcrumb-item active">Checkout</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+<form method="post" action="{{path('order_action')}}">
+                        <div class="row">
+                        
+                            <div class="col-xl-8">
+                                <div class="custom-accordion">
+                                    <div class="card">
+                                        <a href="#checkout-shippinginfo-collapse" class="collapsed text-dark" data-bs-toggle="collapse">
+                                            <div class="p-4">
+                                                
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <i class="uil uil-truck text-primary h2"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1 overflow-hidden">
+                                                        <h5 class="font-size-16 mb-1">Shipping Info</h5>
+                                                        <p class="text-muted text-truncate mb-0">Neque porro quisquam est</p>
+                                                    </div>
+                                                    <div class="flex-shrink-0">
+                                                        <i class="mdi mdi-chevron-up accor-down-icon font-size-24"></i>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </a>
+
+                                        <div id="checkout-shippinginfo-collapse" class="collapse">
+                                            <div class="p-4 border-top">
+                                                <h5 class="font-size-14 mb-3">Shipping Info</h5>
+                                                <div class="row">
+                                                    
+                                                        {% for addr in user.adresses %}
+                                                        <div class="col-lg-4 col-sm-6">
+                                                            <div class="card border rounded  shipping-address">
+                                                                <div class="card-body">
+                                                                    <a href="#" class="float-end ms-1" data-bs-toggle="tooltip" data-placement="top" title="Edit">
+                                                                        <i class="uil uil-pen font-size-16"></i>
+                                                                    </a>
+                                                                    <h5 class="font-size-14 mb-4">{{addr.nom}}</h5>
+                    
+                                                                    <h5 class="font-size-14">{{addr.fullAddresse}}</h5>
+                                                                    <p class="mb-1">{{addr.indication}}</p>
+                                                                    <p class="mb-0">Mo. {{user.telephone}}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {% endfor %} 
+                                                        <div class="col-lg-4 col-sm-6">
+                                                            <div class="card border rounded active shipping-address">
+                                                                        
+                                                                <div class="card-body">
+                                                                    
+                                                                    <h5 class="font-size-14 mb-4">Retirer point relais proche</h5>
+                    
+                                                                    <h5 class="font-size-14">BRAZIL BURGER DAKAR</h5>
+                                                                    <p class="mb-1">12 avue gato junior</p>
+                                                                    <p class="mb-0">Mo. 778726229</p>
+                                                                </div>
+                                                            </div>  
+                                                        </div>       
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <a href="#checkout-paymentinfo-collapse" class="collapsed text-dark" data-bs-toggle="collapse">
+                                            <div class="p-4">
+                                                
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <i class="uil uil-bill text-primary h2"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1 overflow-hidden">
+                                                        <h5 class="font-size-16 mb-1">Choisissez mode de paiement</h5>
+                                                        <p class="text-muted text-truncate mb-0">Duis arcu tortor, suscipit eget</p>
+                                                    </div>
+                                                    <div class="flex-shrink-0">
+                                                        <i class="mdi mdi-chevron-up accor-down-icon font-size-24"></i>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </a>
+
+                                        <div id="checkout-paymentinfo-collapse" class="collapse">
+                                            <div class="p-4 border-top">
+                                                <div>
+                                                    <h5 class="font-size-14 mb-3">Payment method :</h5>
+                                                
+                                                    <div class="row">
+                                                   
+                                                        <div class="col-lg-3 col-sm-6">
+                                                            <div data-bs-toggle="collapse">
+                                                                <label class="card-radio-label">
+                                                                    <input type="radio" value="card" name="pay-method" id="pay-methodoption1" class="card-radio-input">
+        
+                                                                    <span class="card-radio text-center text-truncate">
+                                                                        <i class="uil uil-postcard d-block h2 mb-3"></i>
+                                                                        Credit / Debit Card
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-lg-3 col-sm-6">
+                                                            <div>
+                                                                <label class="card-radio-label">
+                                                                    <input type="radio" value="paypal" name="pay-method" id="pay-methodoption2" class="card-radio-input">
+        
+                                                                    <span class="card-radio text-center text-truncate">
+                                                                        <i class="uil uil-paypal d-block h2 mb-3"></i>
+                                                                        Paypal
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3 col-sm-6">
+                                                            <div data-bs-toggle="collapse">
+                                                                <label class="card-radio-label">
+                                                                    <input type="radio" value="mobile"  name="pay-method" id="pay-methodoption3" class="card-radio-input">
+        
+                                                                    <span class="card-radio text-center text-truncate">
+                                                                        <i class="uil uil-postcard d-block h2 mb-3"></i>
+                                                                        Mobile money
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-3 col-sm-6">
+                                                            <div>
+                                                                <label class="card-radio-label">
+                                                                    <input type="radio" value="cash" name="pay-method" id="pay-methodoption4" class="card-radio-input" >
+        
+                                                                    <span class="card-radio text-center text-truncate">
+                                                                        <i class="uil uil-money-bill d-block h2 mb-3"></i>
+                                                                        <span>Cash on Delivery</span>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="row my-4">
+                                    <div class="col">
+                                        <a href="{{path('cart')}}" class="btn btn-link text-muted">
+                                            <i class="uil uil-arrow-left me-1"></i> Continue Shopping </a>
+                                    </div> <!-- end col -->
+                                    <div class="col">
+                                        <div class="text-end mt-2 mt-sm-0">
+                                            <button type="submit"  class="btn btn-success">
+                                                <i class="uil uil-shopping-cart-alt me-1"></i> Procced </button>
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row-->
+                             
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="card checkout-order-summary">
+                                    <div class="card-body">
+                                        <div class="p-3 bg-light mb-4">
+                                            <h5 class="font-size-16 mb-0">Order Summary <span class="float-end ms-2">#MN0124</span></h5>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-centered mb-0 table-nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="border-top-0" style="width: 110px;" scope="col">Product</th>
+                                                        <th class="border-top-0" scope="col">Product Desc</th>
+                                                        <th class="border-top-0" scope="col">Price</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                 {% for item in cart %} 
+                                                    <tr>
+                                                        <th scope="row"><img src="{{asset('uploads/product/')}}{{item.item.image}}" alt="product-img" title="product-img" class="avatar-md"></th>
+                                                        <td>
+                                                            <h5 class="font-size-14 text-truncate"><a href="ecommerce-product-detail.html" class="text-dark">{{item.item.nom}}</a></h5>
+                                                            <p class="text-muted mb-0">CFA {{item.item.prix}} x {{item.quantite}}</p>
+                                                        </td>
+                                                        <td>{{item.item.prix * item.quantite}} CFA</td>
+                                                    </tr>
+                                                     {% endfor %} 
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <h5 class="font-size-14 m-0">Sub Total :</h5>
+                                                        </td>
+                                                        <td>
+                                                            CFA {{total}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <h5 class="font-size-14 m-0">Discount :</h5>
+                                                        </td>
+                                                        <td>
+                                                            0 
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <h5 class="font-size-14 m-0">Shipping Charge :</h5>
+                                                        </td>
+                                                        <td>
+                                                            0
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <h5 class="font-size-14 m-0">Estimated Tax :</h5>
+                                                        </td>
+                                                        <td>
+                                                           CFA {{tax}}
+                                                        </td>
+                                                    </tr>                              
+                                                        
+                                                    <tr class="bg-light">
+                                                        <td colspan="2">
+                                                            <h5 class="font-size-14 m-0">Total:</h5>
+                                                        </td>
+                                                        <td>
+                                                            CFA {{total + tax }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+</form>
+                        <!-- end row -->
+                        
+                    </div> <!-- container-fluid -->
+                
+
+                
+                    
+            </div>
+            <!-- end main content-->
+
+
+        
+        <!-- /Right-bar -->
+
+        
+
+        <!-- JAVASCRIPT -->
+        <script src="{{asset('assets/backend/libs/jquery/jquery.min.js')}}"></script>
+        <script src="{{asset('assets/backend/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{asset('assets/backend/libs/metismenu/metisMenu.min.js')}}"></script>
+        <script src="{{asset('assets/backend/libs/simplebar/simplebar.min.js')}}"></script>
+        <script src="{{asset('assets/backend/libs/node-waves/waves.min.js')}}"></script>
+        <script src="{{asset('assets/backend/libs/waypoints/lib/jquery.waypoints.min.js')}}"></script>
+        <script src="{{asset('assets/backend/libs/jquery.counterup/jquery.counterup.min.js')}}"></script>
+
+       <!-- App js -->
+        <script src="{{asset('/assets/backend/js/app.js')}}"></script>
+    </body>
+</html>

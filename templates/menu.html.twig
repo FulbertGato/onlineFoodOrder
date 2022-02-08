@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg-gray">
+<div class="container">
+	<h2 class="title-page">My account</h2>
+</div> <!-- container //  -->
+</section>
+<!-- ========================= SECTION PAGETOP END// ========================= -->
+	
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+
+<div class="row">
+	<aside class="col-md-3">
+		<nav class="list-group">
+			<a class="list-group-item" href="{{path('my_account')}}"> Mon compte  </a>
+			<a class="list-group-item" href="{{path('my_address')}}"> Mes addresses </a>
+			<a class="list-group-item" href="{{path('my_orders')}}"> Mes commandes </a>
+		
+			<a class="list-group-item" href="{{path('my_setting')}}"> Settings </a>
+			<a class="list-group-item" href="{{path('app_logout')}}"> Se deconnecter </a>
+		</nav>
+	</aside> <!-- col.// -->
+{% block main %}
+
+{% endblock %}
+</div>
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'menu.html.twig' %}
+
+{% block main %}
+<main class="col-md-9">
+
+	<div class="card">
+      <div class="card-body">
+        <form class="row" method="post" action="#">
+     	    <div class="col-md-9">
+     		    <div class="form-row">
+				    <div class="col form-group">
+                        <label>Nom</label>
+                        <input type="text" class="form-control" name="nom" value="{{user.nom}}">
+				    </div> <!-- form-group end.// -->
+                    <div class="col form-group">
+                        <label>Prénom</label>
+                        <input type="text" class="form-control" name="prenom" value="{{user.prenom}}">
+                    </div> <!-- form-group end.// -->
+			    </div> <!-- form-row.// -->
+			
+
+                <div class="form-row">
+                    
+                    <div class="col form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" name="email" value="{{user.email}}">
+				    </div> <!-- form-group end.// -->
+                    <div class="col form-group">
+                        <label>Téléphone</label>
+                        <input type="text" class="form-control" name="phone" value="{{user.telephone}}">
+                    </div> <!-- form-group end.// -->
+                </div> <!-- form-row.// -->
+
+                <button type="submit" class="btn btn-primary">Save</button>	
+                <button class="btn btn-light">Change password</button>	
+
+			    <br><br><br><br><br><br>
+
+            </div> <!-- col.// -->
+            
+        </form>
+      </div> <!-- card-body.// -->
+    </div> <!-- card .// -->
+</main> <!-- col.// -->
+{% endblock %}

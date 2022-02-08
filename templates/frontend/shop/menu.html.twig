@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+
+
+
+
+<div class="row">
+	<aside class="col-md-2">
+
+	<article class="filter-group">
+		<h6 class="title">
+			<a href="#" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_1">Top burgers Menu</a>
+		</h6>
+		<div class="filter-content collapse show" id="collapse_1">
+			<div class="inner">
+				<ul class="list-menu">
+					<li><a href="#">Burgers Royales </a></li>
+					
+				</ul>
+			</div> <!-- inner.// -->
+		</div>
+	</article> <!-- filter-group  .// -->
+	
+	<article class="filter-group">
+		<h6 class="title">
+			<a href="#" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_3"> Filter par prix</a>
+		</h6>
+		<div class="filter-content collapse show" id="collapse_3">
+			<div class="inner">
+				
+				<div class="form-row">
+				<div class="form-group col-md-6">
+				  <label>Min</label>
+				  <input class="form-control" placeholder="3000" type="number">
+				</div>
+				<div class="form-group text-right col-md-6">
+				  <label>Max</label>
+				  <input class="form-control" placeholder="50000" type="number">
+				</div>
+				</div> <!-- form-row.// -->
+				<button class="btn btn-block btn-primary">Filtrer</button>
+			</div> <!-- inner.// -->
+		</div>
+	</article> <!-- filter-group .// -->
+
+    <article class="filter-group">
+		<h6 class="title">
+			<a href="#" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_4"> Créer mon menu</a>
+		</h6>
+		<div class="filter-content collapse show" id="collapse_4">
+			<div class="inner">
+			
+				<button class="btn btn-block btn-success">Créer</button>
+			</div> <!-- inner.// -->
+		</div>
+	</article> <!-- filter-group .// -->
+
+
+	</aside> <!-- col.// -->
+	<main class="col-md-10">
+
+
+<header class="mb-3">
+		<div class="form-inline">
+			<strong class="mr-md-auto">{{menus | length }} Menus trouver</strong>
+			
+			
+		</div>
+</header><!-- sect-heading -->
+
+{% for menu in menus %}
+
+<article class="card card-product-list">
+	<div class="row no-gutters">
+        <aside class="col-md-3">
+			<a href="#" class="img-wrap">
+				<img src="{{asset('uploads/product/')}}{{menu.image}}">
+			</a>
+		</aside> <!-- col.// -->
+		
+		<div class="col-md-6">
+			<div class="info-main">
+				<a href="#" class="h5 title"> {{menu.nom}}</a>
+				<div class="rating-wrap mb-2">
+					<ul class="rating-stars">
+						<li style="width:100%" class="stars-active"> 
+							<i class="fa fa-star"></i> <i class="fa fa-star"></i> 
+							<i class="fa fa-star"></i> <i class="fa fa-star"></i> 
+							<i class="fa fa-star"></i> 
+						</li>
+						<li>
+							<i class="fa fa-star"></i> <i class="fa fa-star"></i> 
+							<i class="fa fa-star"></i> <i class="fa fa-star"></i> 
+							<i class="fa fa-star"></i> 
+						</li>
+					</ul>
+					<div class="label-rating">9/10</div>
+				</div> <!-- rating-wrap.// -->
+			
+				<p class="mb-3">
+					{% for complement in menu.complements %}
+					   <span class="tag">{{complement.nom}} </span> 
+					{% endfor %}
+				</p>
+
+				<p> {{menu.detail}}</p>
+
+			</div> <!-- info-main.// -->
+		</div> <!-- col.// -->
+		<aside class="col-sm-3">
+			<div class="info-aside">
+				<div class="price-wrap">
+					<span class="h5 price">{{menu.prix}} CFA</span> 
+					
+				</div> <!-- price-wrap.// -->
+				<small class="text-warning">Livraison possible</small>
+				
+				<p class="text-muted mt-3">Burger: {{menu.burger.nom}}</p>
+				<p class="mt-3">
+					<a href="{{path('cart_add',{code:menu.code})}}" class="btn btn-outline-primary"> <i class="fa fa-envelope"></i> Ajouter</a>
+					<a href="#" class="btn btn-light"><i class="fa fa-heart"></i> Acheter </a>
+				</p>
+
+				
+
+			</div> <!-- info-aside.// -->
+		</aside> <!-- col.// -->
+	</div> <!-- row.// -->
+</article> <!-- card-product .// -->
+
+{% endfor %}
+{% if menus.pageCount > 1 %}
+<nav class="mb-4" aria-label="Page navigation sample">
+
+  <ul class="pagination">
+	{{ knp_pagination_render(menus) }}
+
+  </ul>
+</nav>
+{% endif %}
+
+
+	</main> <!-- col.// -->
+
+</div>
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+<!-- ========================= SECTION SUBSCRIBE  ========================= -->
+<section class="padding-y-lg bg-light border-top">
+<div class="container">
+
+<p class="pb-2 text-center">Delivering the latest product trends and industry news straight to your inbox</p>
+
+<div class="row justify-content-md-center">
+	<div class="col-lg-4 col-sm-6">
+<form class="form-row">
+		<div class="col-8">
+		<input class="form-control" placeholder="Your Email" type="email">
+		</div> <!-- col.// -->
+		<div class="col-4">
+		<button type="submit" class="btn btn-block btn-warning"> <i class="fa fa-envelope"></i> Subscribe </button>
+		</div> <!-- col.// -->
+</form>
+<small class="form-text">We’ll never share your email address with a third-party. </small>
+	</div> <!-- col-md-6.// -->
+</div>
+	
+
+</div>
+</section>
+<!-- ========================= SECTION SUBSCRIBE END// ========================= -->
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'menu.html.twig' %}
+
+{% block main %}
+<main class="col-md-9">
+
+	<article class="card mb-4">
+        <div class="table-responsive">
+                <table class="table table-hover">
+                    
+                        <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                
+                                <td> 
+                                    <p class="title mb-0">Order Number : {{order.numeroCommande}} </p>
+                                    <var class="price text-muted">CFA {{order.total}}</var>
+                                </td>
+                                <td> Etat <br> {{order.status}} </td>
+                                <td width="250"> 
+                                    <a href="{{path('order_tracker',{id:order.id})}}" class="btn btn-outline-primary">Suivre</a> 
+                                    {% if order.paiement.status == 'unpaid' %}     
+                                        <a href="#" class="btn btn-outline-success">Payez</a>
+                                    {% endif %}                               
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                </table>
+		</div> <!-- table-responsive .end// -->
+	</article> <!-- card order-item .// -->
+</main> <!-- col.// -->
+{% endblock %}

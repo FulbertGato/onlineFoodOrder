@@ -1,0 +1,68 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %} Les Commandes{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-12">
+                                
+        <div class="table-responsive mb-4">
+            <table class="table table-centered datatable dt-responsive nowrap table-card-list" style="border-collapse: collapse; border-spacing: 0 12px; width: 100%;">
+                <thead>
+                    <tr class="bg-transparent">
+                        <th style="width: 24px;">
+                            <div class="form-check text-center font-size-16">
+                                <input type="checkbox" class="form-check-input" id="invoicecheck">
+                                <label class="form-check-label" for="invoicecheck"></label>
+                            </div>
+                        </th>
+                        <th>REF COMMANDE</th>
+                        <th>DATE PAIEMENT</th>
+                        <th>CLIENT</th>
+                        <th>MONTANT</th>
+                        <th>Status</th>
+                        <th>Methode</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>                                          
+                   {% for payment in payments %}
+                    <tr>
+                        <td>
+                            <div class="form-check text-center font-size-16">
+                                <input type="checkbox" class="form-check-input" id="invoicecheck12">
+                                <label class="form-check-label" for="invoicecheck12"></label>
+                            </div>
+                        </td>
+                        
+                        <td><a href="javascript: void(0);" class="text-dark fw-bold">{{payment.commande.numeroCommande}}</a> </td>
+                        <td>
+                            {{ payment.commande.createAt|date('Y-m-d') }}
+                        </td>
+                        <td>{{payment.commande.client.nom}}</td>
+                        
+                        <td>
+                            CFA {{payment.commande.total}}
+                        </td>
+                        <td>
+                            {% if payment.status == 'paid' %}
+                            <div class="badge bg-soft-success font-size-12">{{payment.status}}</div>
+                            {% else %}
+                            <div class="badge bg-soft-danger font-size-12">{{payment.status}}</div>
+                            {% endif %}
+                        </td>
+                        <td>
+                             {{payment.methode}}
+                        </td>
+                        
+                        
+                    </tr>
+
+                   {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+{% endblock %}

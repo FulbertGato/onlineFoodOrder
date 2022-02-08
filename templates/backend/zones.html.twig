@@ -1,0 +1,82 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Zones de livraison{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-body">
+
+                    <h4 class="card-title">Zones de livraison</h4>
+                   
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                        <tr>
+
+                            <th>Nom</th>
+                            <th>prix</th>
+                            <th>Actions</th>
+                            
+                        </tr>
+                        </thead>
+
+
+                        <tbody>
+                        {% for zone in zones %}
+                        <tr>
+                            <td>{{zone.nom}}</td>
+                            <td>{{zone.prix}}</td>
+                            <td>
+                                <a  href="{{ path("zone_edit",{id:zone.id}) }}"  class="btn btn-warning"  >Modifier </a>
+                                
+                            </td>
+                            
+                        </tr>
+                        {% endfor %}
+                        
+                        
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div> <!-- end col -->
+        <div class="col-4">
+               
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Ajouter une zone</h4>
+                        <form class="custom-validation" action="{{path('zone_save')}}" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Nom</label>
+                                <input type="text" class="form-control" required name="nom" value="{% if zoneSelect is defined %}{{zoneSelect.nom}}{% endif %}"/>
+                                <input hidden type="text" name="id" value="{% if zoneSelect is defined %}{{zoneSelect.id}}{% else %} 0 {% endif %}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Prix</label>
+                                <input type="number" class="form-control"  name="prix"  value="{% if zoneSelect is defined %}{{zoneSelect.prix}}{% else %}  {% endif %}"/>
+                            </div>
+                            <div>
+                                <div>
+                                {% if zoneSelect is defined %}
+                                    <button type="submit" name="btn_edit" class="btn btn-warning waves-effect waves-light me-1">Modifier</button>
+                                {% else %}
+                                    <button  type="submit" name="btn_save" class="btn btn-primary waves-effect waves-light me-1">
+                                        Ajouter
+                                    </button>
+                                {% endif %}
+                                    
+                                    <button type="reset" class="btn btn-secondary waves-effect">
+                                        Annuler
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+        
+                </div>
+            </div>
+         </div>
+    </div> <!-- end row -->
+{% endblock %}
