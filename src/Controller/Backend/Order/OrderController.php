@@ -41,6 +41,20 @@ class OrderController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("gestion/orders/now", name="order_togay")
+     */
+    public function todayOrder(CommandeRepository $repo){
+
+        $date = new \DateTimeImmutable();
+        $commandesDay=$repo->findBy(["createAt"=>$date]);
+
+        return $this->render('backend/order/order/index.html.twig', [
+            'orders' =>  $commandesDay
+        ]);
+    }
+
     /**
      * @Route("gestion/orders/{id}", name="order_details")
      */

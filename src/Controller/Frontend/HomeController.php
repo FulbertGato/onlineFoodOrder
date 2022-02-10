@@ -27,6 +27,12 @@ class HomeController extends AbstractController
     public function index(BurgerRepository  $repoBurger, MenuRepository $repoMenu,PaginatorInterface $paginator,Request $request): Response
     {
 
+        if ($this->getUser()) {
+            if($this->getUser()->getRoles()[0] == "ROLE_GESTIONNAIRE"){
+                return  $this->redirectToRoute("dashboard");
+             }
+        }
+        
         $dataM = $repoMenu->findAll();
         $menus = $paginator->paginate(
             $dataM,
