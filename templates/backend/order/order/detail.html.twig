@@ -79,7 +79,7 @@
                                 <tr>
                                     <th scope="row"><img src="{{asset('uploads/product/')}}{{item.produit.image}}" alt="product-img" title="product-img" class="avatar-md"></th>
                                     <td>
-                                        <h5 class="font-size-14 text-truncate"><a href="ecommerce-product-detail.html" class="text-dark">{{item.produit.nom}}</a></h5>
+                                        <h5 class="font-size-14 text-truncate">{{item.produit.nom}}</h5>
                                         <p class="text-muted mb-0">CFA {{item.produit.prix}} x {{item.quantite}}</p>
                                     </td>
                                     <td>{{item.produit.prix * item.quantite }} CFA</td>
@@ -121,6 +121,34 @@
                                         {{order.paiement.status}}
                                     </td>
                                 </tr>
+
+                                <tr class="bg-light">
+                                    <td colspan="2">
+                                        <h5 class="font-size-14 m-0">Nom client :</h5>
+                                    </td>
+                                    <td>
+                                        {{order.client.nom}}
+                                    </td>
+                                </tr>
+
+                                <tr class="bg-light">
+                                    <td colspan="2">
+                                        <h5 class="font-size-14 m-0">Numero :</h5>
+                                    </td>
+                                    <td>
+                                        {{order.client.telephone}}
+                                    </td>
+                                </tr>
+
+
+                                <tr class="bg-light">
+                                    <td colspan="2">
+                                        <h5 class="font-size-14 m-0">Nombre commande :</h5>
+                                    </td>
+                                    <td>
+                                        {{order.client.commandes | length}}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         
@@ -128,7 +156,7 @@
                 </div>
             </div>
          </div>
-    <div class="col-xl-8">
+        <div class="col-xl-8">
         <div class="card checkout-order-summary">
             <div class="card-body">
                 <div class="p-3 bg-light mb-4">

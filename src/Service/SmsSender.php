@@ -18,7 +18,7 @@ class SmsSender{
 
     public function sendSms($message,$numero){
 
-        $response = $this->client->request('POST', 'https://gateway.intechsms.sn/api/send-sms',[
+       $response = $this->client->request('POST', 'https://gateway.intechsms.sn/api/send-sms',[
             "body"=>[
             "app_key"=>$_ENV['INTECH_SMS'],
             "sender"=>"Brazil Test",
@@ -30,7 +30,7 @@ class SmsSender{
 
         ]);
 
-        //dd( $response);
+        //dd( $response);    
     }
 
    
